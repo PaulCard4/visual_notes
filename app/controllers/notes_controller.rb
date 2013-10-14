@@ -1,6 +1,7 @@
 class NotesController < ApplicationController
   before_action :set_note, only: [:show, :edit, :update, :destroy]
-
+  before_actoin :correct_user, only: [:edit, :update, :destroy]
+  before_action :authenticate_user!, only: [:new, :show, :edit, :update, :destroy]
   # GET /notes
   # GET /notes.json
   def index
@@ -14,7 +15,7 @@ class NotesController < ApplicationController
 
   # GET /notes/new
   def new
-    @note = Note.new
+    @note = current_user.notes.build
   end
 
   # GET /notes/1/edit
@@ -24,7 +25,7 @@ class NotesController < ApplicationController
   # POST /notes
   # POST /notes.json
   def create
-    @note = Note.new(note_params)
+    @note = current_user.notes.build(note_params)
 
     respond_to do |format|
       if @note.save
@@ -65,6 +66,11 @@ class NotesController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_note
       @note = Note.find(params[:id])
+    end
+
+    def correct_user
+        @note=current_user.notes.find_by(id: params[:id])
+        redirect_to notes_path, notice: "Sorry, no editing for notes you didn't create it!" if @pin.nil
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

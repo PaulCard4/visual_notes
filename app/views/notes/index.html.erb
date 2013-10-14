@@ -4,7 +4,7 @@
   <thead>
     <tr>
       <th>Description</th>
-      <th></th>
+      <th>User_id</th>
       <th></th>
       <th></th>
     </tr>
@@ -14,9 +14,12 @@
     <% @notes.each do |note| %>
       <tr>
         <td><%= note.description %></td>
+        <td><%= note.use.email if pin.user %></td>
         <td><%= link_to 'Show', note %></td>
-        <td><%= link_to 'Edit', edit_note_path(note) %></td>
-        <td><%= link_to 'Destroy', note, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if note.user == current_user %>
+          <td><%= link_to 'Edit', edit_note_path(note) %></td>
+          <td><%= link_to 'Destroy', note, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <%end%>
       </tr>
     <% end %>
   </tbody>
