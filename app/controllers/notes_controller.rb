@@ -70,11 +70,11 @@ class NotesController < ApplicationController
 
     def correct_user
         @note=current_user.notes.find_by(id: params[:id])
-        redirect_to notes_path, notice: "Sorry, no editing for notes you didn't create it!" if @pin.nil
+        redirect_to notes_path, notice: "Not authorized to edit this note" if @note.nil?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def note_params
-      params.require(:note).permit(:description)
+      params.require(:note).permit(:description, :image)
     end
 end

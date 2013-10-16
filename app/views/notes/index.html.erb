@@ -3,6 +3,7 @@
 <table>
   <thead>
     <tr>
+      <th>Image</th>
       <th>Description</th>
       <th>User_id</th>
       <th></th>
@@ -13,8 +14,9 @@
   <tbody>
     <% @notes.each do |note| %>
       <tr>
+        <td><%= image_tag note.image.url(:medium) %>
         <td><%= note.description %></td>
-        <td><%= note.use.email if pin.user %></td>
+        <td><%= note.user.email if note.user %></td>
         <td><%= link_to 'Show', note %></td>
         <% if note.user == current_user %>
           <td><%= link_to 'Edit', edit_note_path(note) %></td>
@@ -26,5 +28,8 @@
 </table>
 
 <br>
+<% if user_signed_in? %>
 
 <%= link_to 'New Note', new_note_path %>
+
+<% end %>
